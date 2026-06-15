@@ -13,7 +13,11 @@ import Loader from "@/components/Loader/Loader";
 import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 import css from "./NotesPage.module.css";
 
-const NotesClient = () => {
+interface NotesClientProps {
+  tag?: string;
+}
+
+const NotesClient = ({ tag }: NotesClientProps) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -30,8 +34,8 @@ const NotesClient = () => {
   };
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", search, page],
-    queryFn: () => fetchNotes(search, page),
+    queryKey: ["notes", search, page, tag ?? "all"],
+    queryFn: () => fetchNotes(search, page, tag),
     placeholderData: keepPreviousData,
   });
 

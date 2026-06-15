@@ -19,6 +19,7 @@ interface FetchNotesParams {
   page: number;
   perPage: number;
   search?: string;
+  tag?: string;
 }
 
 export interface NewNoteData {
@@ -29,12 +30,17 @@ export interface NewNoteData {
 
 export const fetchNotes = async (
   search: string,
-  page: number
+  page: number,
+  tag?: string
 ): Promise<FetchNotesResponse> => {
   const params: FetchNotesParams = { page, perPage: PER_PAGE };
 
   if (search.trim()) {
     params.search = search.trim();
+  }
+
+  if (tag && tag !== "all") {
+    params.tag = tag;
   }
 
   const response = await api.get<FetchNotesResponse>("/notes", { params });
